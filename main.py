@@ -8,7 +8,9 @@ import datetime
 from discord.ext import commands
 from config import *
 
-if lm_api not in ["gemini", "groq", "lm_studio", "openai"]:
+if not lm_api:
+  console.log("LM/LLM double-check is disabled in config.py", "INFO")
+if lm_api and lm_api not in ["gemini", "groq", "lm_studio", "openai"]:
   console.log("Unsupported LM/LLM selected in config.py! Supported LMs/LLMs are: gemini, groq, lm_studios, openai", "ERROR")
   exit(1)
   
@@ -18,12 +20,21 @@ DISCORD_TOKEN=os.getenv("DISCORD_TOKEN")
 client = commands.Bot(command_prefix="/", intents=discord.Intents.all())
 
 @client.event
-
 async def on_ready():
     console.log(f'Bot logged in as {client.user}', "INFO")
     console.log((f'Using LM/LLM: {lm_api}' if lm_api else "Double-check disabled"), "INFO")
     starttime = time.time() - starttime_a
     console.log(f'Done, start time:{starttime}', "INFO", send=True)
+    console.log("                  =][= THE EMPEROR PROTECTS =][=", "BOT")
+    console.log("         ⠘⠻⡿⠿⠿⠿⠿⠿⠿⠿⠿⠟⠛⠛⠛⣻⡿⠋⠀⣀⣀⣀⠄⠠⣀⣠⣀⡀⠈⠻⣿⡛⠛⠛⠻⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠋", "BOT")          
+    console.log("         ⠀⠀⠀⢦⣤⣴⣶⣶⠶⠶⠛⠛⢛⣩⣭⣿⠀⠀⠿⠛⠻⣿⣦⣴⣾⡞⠛⢻⠃⠀⢸⡯⣍⣙⠛⠛⠷⠶⢶⣶⣶⣤⣤⠆", "BOT")         
+    console.log("         ⠀⠀⠀⠀⠉⢡⣠⣤⣴⡶⠾⠛⣉⣵⠖⣻⣦⣤⣤⣤⣶⣌⣳⣷⣫⣶⣦⣤⣤⣤⣾⡓⢦⣍⡙⠻⠶⣶⣤⣤⣠⠈⠁", "BOT")         
+    console.log("         ⠀⠀⠀⠀⠀⠀⠈⠉⣀⣤⡶⠟⠉⣠⡾⢡⡏⡽⢹⡹⣸⣟⣿⣿⡟⣷⡸⣽⢹⡝⣦⠹⣦⡈⠙⠷⣦⣄⡈⠉", "BOT")          
+    console.log("         ⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⢀⣴⡾⠋⣰⡟⣰⠇⠯⢾⡿⣼⣿⣿⣿⣹⣿⠞⠆⣷⠸⣧⠈⠻⣦⣄⠈⠉", "BOT")          
+    console.log("         ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠰⠿⠁⠋⠀⠀ ⢱⢿⣿⣿⣿⡞⠀⠀⠈⠃⠹⠷⠀⠉", "BOT")          
+    console.log("         ⠀⠀⠀⠀ ⠀⠀ ⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⣀⣠⣞⡝⡟⡟⡽⡽⣦⣀", "BOT")          
+    console.log("         ⠀⠀ ⠀⠀⠀  ⠀⠀⠀⠀ ⠀⠀⠀⠀⢰⣣⢏⠿⠹⢻⣷⠻⠽⣏⢿⡇", "BOT")          
+    console.log("         ⠀⠀⠀⠀ ⠀ ⠀ ⠀⠀⠀⠀ ⠀⠀⠀ ⠛⠁⠀⠀ ⠁ ⠀⠀⠛⠃", "BOT")          
     
 async def on_message(message):
     if message.author == client.user:
