@@ -1,7 +1,9 @@
 import os
 import glob
 from datetime import datetime
-from config import debug_enabled
+import discord
+from config import *
+import asyncio
 LOG_DIR = ".\\logs"
 LOG_PER_FILE = 20
 MAX_LOG_FILES = 50
@@ -33,10 +35,29 @@ COLOR_MAP = {
   "BOT": AnsiColor.GRAY
 }
 
-def log(message: str, level="INFO", is_user_msg=False):
-  global current_log_file, user_msg_count, debug_enabled
+async def send_log_to_discord(client: discord.Client, channel_id: list, message: str, level="INFO"):
+  color_map = {
+    "INFO": 0x00FF00,
+    "DEBUG": 0x00FFFF,
+    "ERROR": 0xFF0000,
+    "WARN": 0xFFFF00,
+    "BOT": 0x808080
+  }
+  color = color_map.get(level.upper(), 0xFFFFFF)
+  embed = discord.Embed(description=message, color=color)
+  timestamp = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+  embed.set_footer(text=f"Logged at {timestamp}")
+  for channelid in channel_id:
+    channel = client.get_channel(channelid)
+    if channel:
+      await channel.send(embed=embed)
+
+def log(message: str, level="INFO", is_user_msg=False, send=False, client: discord.Client = None):
+  global current_log_file, user_msg_count, debug_enabled, log_channel
   if level.upper() == "DEBUG" and not debug_enabled:
     return
+  if send_logs_to_discord and log_channel and send and client is not None:
+    asyncio.create_task(send_log_to_discord(client=client, channel_id=log_channel, message=message, level=level))
 
   timestamp = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
   line = f"[{timestamp}] [{level}]: {message}"
