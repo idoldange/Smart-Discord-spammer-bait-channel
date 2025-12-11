@@ -10,7 +10,7 @@ enable_gemini=False
 # ==][== DON'T TOUCH ==][==
 from dotenv import load_dotenv
 import os
-if enable_gemini
+if enable_gemini:
   load_dotenv()
   GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
 else:
