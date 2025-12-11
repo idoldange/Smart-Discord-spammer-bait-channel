@@ -1,28 +1,27 @@
 
 # Config
 channel=[]
-lm_studio_port=1234
-lm_studio_ip="127.0.0.1"
-enable_gemini=False
 
+#=][= channel for logging bot activity =][=
+log_channel=[] 
 
+#=][= enable/disable language model usage for double-check =][=
+use_lm=True
 
-# ==][== DON'T TOUCH ==][==
-from dotenv import load_dotenv
-import os
-if enable_gemini:
-  load_dotenv()
-  GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
-else:
-  GEMINI_API_KEY=None
-DISCORD_TOKEN=os.getenv("DISCORD_TOKEN")
+#=][= select language model API =][=
+lm_api=[]
+#  currently support: "gemini", "groq", "lm_studio", "openai"
+#  if one fails, it will automatically try the next one in the list
+
+#=][= enable/disable debug messages in console/logs =][=
+debug_enabled=False
 
 #⠘⠻⡿⠿⠿⠿⠿⠿⠿⠿⠿⠟⠛⠛⠛⣻⡿⠋⠀⣀⣀⣀⠄⠠⣀⣠⣀⡀⠈⠻⣿⡛⠛⠛⠻⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠋
 #⠀⠀⠀⢦⣤⣴⣶⣶⠶⠶⠛⠛⢛⣩⣭⣿⠀⠀⠿⠛⠻⣿⣦⣴⣾⡞⠛⢻⠃⠀⢸⡯⣍⣙⠛⠛⠷⠶⢶⣶⣶⣤⣤⠆⠀⠀
 #⠀⠀⠀⠀⠉⢡⣠⣤⣴⡶⠾⠛⣉⣵⠖⣻⣦⣤⣤⣤⣶⣌⣳⣷⣫⣶⣦⣤⣤⣤⣾⡓⢦⣍⡙⠻⠶⣶⣤⣤⣠⠈⠁⠀⠀⠀
 #⠀⠀⠀⠀⠀⠀⠈⠉⣀⣤⡶⠟⠉⣠⡾⢡⡏⡽⢹⡹⣸⣟⣿⣿⡟⣷⡸⣽⢹⡝⣦⠹⣦⡈⠙⠷⣦⣄⡈⠉⠀⠀⠀⠀⠀⠀
 #⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⢀⣴⡾⠋⣰⡟⣰⠇⠯⢾⡿⣼⣿⣿⣿⣹⣿⠞⠆⣷⠸⣧⠈⠻⣦⣄⠈⠉⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠰⠿⠁⠋⠀⠀⠀⢱⢿⣿⣿⣿⢷⠀⠀⠀⠈⠃⠹⠷⠀⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣞⡝⡟⡟⡽⡽⣦⣀⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣣⢏⠿⠹⢻⣷⠻⠽⣏⢿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠁⠀⠀⠀⠁⠀⠀⠀⠛⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+#⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠰⠿⠁⠋⠀⠀   ⢱⢿⣿⣿⣿⡞⠀⠀⠈⠃⠹⠷⠀⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+#⠀⠀⠀⠀ ⠀⠀ ⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠀ ⣀⣠⣞⡝⡟⡟⡽⡽⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+#⠀⠀ ⠀⠀⠀  ⠀⠀⠀⠀ ⠀⠀⠀⠀⠀ ⠀⢰⣣⢏⠿⠹⢻⣷⠻⠽⣏⢿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+#⠀⠀⠀⠀ ⠀ ⠀ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠛⠁⠀⠀⠀⠁ ⠀ ⠀⠛⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
