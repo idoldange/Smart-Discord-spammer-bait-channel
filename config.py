@@ -13,7 +13,7 @@ use_lm=True
 
 #=][= select language model API =][=
 lm_api=[]
-#  currently support: "gemini", "groq", "lm_studio", "openai"
+#  currently support provider: "gemini", "openrouter", "lm_studio", "openai"
 #  if one fails, it will automatically try the next one in the list
 
 

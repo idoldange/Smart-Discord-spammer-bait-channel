@@ -10,8 +10,8 @@ from config import *
 
 if not lm_api:
   console.log("LM/LLM double-check is disabled in config.py", "INFO")
-if lm_api and lm_api not in ["gemini", "groq", "lm_studio", "openai"]:
-  console.log("Unsupported LM/LLM selected in config.py! Supported LMs/LLMs are: gemini, groq, lm_studios, openai", "ERROR")
+if lm_api and lm_api not in ["gemini", "openrouter", "lm_studio", "openai"]:
+  console.log("Unsupported LM/LLM Provider selected in config.py! Supported LM/LLM Provider are: gemini, openrouter, lm_studios, openai", "ERROR")
   exit(1)
   
 load_dotenv()
@@ -34,7 +34,8 @@ async def on_ready():
     console.log("         ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠰⠿⠁⠋⠀⠀ ⢱⢿⣿⣿⣿⡞⠀⠀⠈⠃⠹⠷⠀⠉", "BOT")          
     console.log("         ⠀⠀⠀⠀ ⠀⠀ ⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⣀⣠⣞⡝⡟⡟⡽⡽⣦⣀", "BOT")          
     console.log("         ⠀⠀ ⠀⠀⠀  ⠀⠀⠀⠀ ⠀⠀⠀⠀⢰⣣⢏⠿⠹⢻⣷⠻⠽⣏⢿⡇", "BOT")          
-    console.log("         ⠀⠀⠀⠀ ⠀ ⠀ ⠀⠀⠀⠀ ⠀⠀⠀ ⠛⠁⠀⠀ ⠁ ⠀⠀⠛⠃", "BOT")          
+    console.log("         ⠀⠀⠀⠀ ⠀ ⠀ ⠀⠀⠀⠀ ⠀⠀⠀ ⠛⠁⠀⠀ ⠁ ⠀⠀⠛⠃", "BOT")       
+    await client.change_presence(activity=discord.Game(name="Infinity Game by Nguyen Duc Hai"))   
     
 async def on_message(message):
     if message.author == client.user:
