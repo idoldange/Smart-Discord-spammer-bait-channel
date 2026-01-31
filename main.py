@@ -7,13 +7,12 @@ import console
 import datetime
 from discord.ext import commands
 from config import *
+from api import *
 
-if not lm_api:
-  console.log("LM/LLM double-check is disabled in config.py", "INFO")
-if lm_api and lm_api not in ["gemini", "openrouter", "lm_studio", "openai"]:
-  console.log("Unsupported LM/LLM Provider selected in config.py! Supported LM/LLM Provider are: gemini, openrouter, lm_studios, openai", "ERROR")
-  exit(1)
-  
+if not use_lm:
+  console.log("Double-check is disabled", "INFO")
+else:
+  console.log("Double-check is enabled", "INFO")
 load_dotenv()
 DISCORD_TOKEN=os.getenv("DISCORD_TOKEN")
 
@@ -22,7 +21,6 @@ client = commands.Bot(command_prefix="/", intents=discord.Intents.all())
 @client.event
 async def on_ready():
     console.log(f'Bot logged in as {client.user}', "INFO")
-    console.log((f'Using LM/LLM: {lm_api}' if lm_api else "Double-check disabled"), "INFO")
     starttime = time.time() - starttime_a
     console.log(f'Done, start time:{starttime}', "INFO", send=True)
     console.log("                  =][= THE EMPEROR PROTECTS =][=", "BOT")
@@ -44,7 +42,7 @@ async def on_message(message):
     if channel.id in bait_channel:
         console.log(f"Received message in bait channel {channel.id} from {message.author}: {message.content}", "INFO", is_user_msg=True, send=True, client=client)
         if not use_lm:
-          console.log("LM/LLM double-check is disabled, automatically ban.", "INFO", send=True, client=client)
+          console.log("Double-check is disabled, automatically ban.", "INFO", send=True, client=client)
           reason = "spam"
           try:
             guild = message.guild
@@ -52,8 +50,11 @@ async def on_message(message):
             bantime = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
             await member.send(f"[{bantime}]You have been banned from {guild.name} for the following reason: {reason}\nYou can appeal against this ban at https://hangdongwibu.io/appeal")
             await guild.ban(member, reason=reason)
+            return
           except Exception as e:
-            console.log(f"Failed to ban user: {e}", "ERROR", send=True, client=client)
+            console.log(f"Failed to ban user: {e}", "ERROR", send=True, client=client); return
+        open
+            
         
 
 if __name__ == "__main__":

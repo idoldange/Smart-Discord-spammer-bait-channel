@@ -3,15 +3,20 @@ import json
 import aiohttp
 import console
 from config import model_name, url
+from api.prompt import sys_instruction
 
 OPENAI_API_KEY = json.loads(os.getenv("OPENAI_API_KEY", "[]")) if os.getenv("OPENAI_API_KEY") else []
 
 async def call_openai(prompt: str, system_prompt: str = "", attachments: list = None) -> str:
     messages = []
+    content = sys_instruction
     if system_prompt:
+        content = f"{content}\n{system_prompt}" if content else system_prompt
+    
+    if content:
         messages.append({
             "role": "system",
-            "content": system_prompt
+            "content": content
         })
     user_content = []
     if attachments:

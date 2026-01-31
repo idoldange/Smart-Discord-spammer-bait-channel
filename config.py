@@ -13,12 +13,6 @@ log_channel=[]
 use_lm=True
 
 
-#=][= Select language model API =][=
-lm_api=[]
-#  currently support provider: "gemini", "openrouter", "lm_studio", "openai"
-#  if one fails, it will automatically try the next one in the list
-
-
 #=][= Enable/disable debug messages in console/logs =][=
 debug_enabled=False
 
