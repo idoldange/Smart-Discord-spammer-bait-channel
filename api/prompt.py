@@ -1,4 +1,4 @@
-sys_instruction= """
+system_prompt_bait= """
 You are a helpful assistant that determines if a Discord user message is from a spam bot or a human.
 You will be given a Discord user message as input.
 Your task is to analyze the message and respond with one of the following:

@@ -8,6 +8,8 @@ import datetime
 from discord.ext import commands
 from config import *
 from api import *
+from api.openai import call_openai
+from api.prompt import system_prompt_bait
 
 if not use_lm:
   console.log("Double-check is disabled", "INFO")
@@ -35,12 +37,13 @@ async def on_ready():
     console.log("         ⠀⠀⠀⠀ ⠀ ⠀ ⠀⠀⠀⠀ ⠀⠀⠀ ⠛⠁⠀⠀ ⠁ ⠀⠀⠛⠃", "BOT")       
     await client.change_presence(activity=discord.Game(name="Infinity Game by Nguyen Duc Hai"))   
     
+@client.event
 async def on_message(message):
     if message.author == client.user:
         return
     channel = message.channel
     if channel.id in bait_channel:
-        console.log(f"Received message in bait channel {channel.id} from {message.author}: {message.content}", "INFO", is_user_msg=True, send=True, client=client)
+        console.log(f"Received message in bait channel {channel.id} from {message.author.display_name}: {message.content}", "INFO", is_user_msg=True, send=True, client=client)
         if not use_lm:
           console.log("Double-check is disabled, automatically ban.", "INFO", send=True, client=client)
           reason = "spam"
@@ -53,8 +56,19 @@ async def on_message(message):
             return
           except Exception as e:
             console.log(f"Failed to ban user: {e}", "ERROR", send=True, client=client); return
-        open
-            
+          
+        call_openai_response = await call_openai(message.content, system_prompt=system_prompt_bait)
+        if "spam bot" in call_openai_response.lower():
+          reason = f"Spam detected: {call_openai_response}"
+          try:
+            guild = message.guild
+            member = message.author
+            bantime = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+            await member.send(f"[{bantime}]You have been banned from {guild.name} for the following reason: {reason}\nYou can appeal against this ban at https://hangdongwibu.io/appeal")
+            await guild.ban(member, reason=reason)
+            return
+          except Exception as e:
+            console.log(f"Failed to ban user: {e}", "ERROR", send=True, client=client); return
         
 
 if __name__ == "__main__":
